@@ -1,16 +1,36 @@
 'use strict';
 
 //dependencies
-require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 
 //middlewares
+const logger = require('./middlewares/logger');
+const error404 = require('./error-handlers/404');
+const error500 = require('./error-handlers/500')
 
 //setup
 const app = express();
-const PORT = process.env.PORT || 3001;
+
+//resource routers
+const foodRoutes = require('./routes/food');
+const clohtesRoutes = require('./routes/clothes');
+
+app.use(cors());
+app.use(express.json());
+
+app.use(logger);
+
+app.use(foodRoutes);
+app.use(clohtesRoutes);
+
+//error handling
+app.use('*', error404);
+app.use(error500);
 
 module.exports = {
   app,
-  start: app.listen(PORT, console.log(`listening on ${PORT}`));
+  start: (PORT) => {
+    app.listen(PORT, console.log(`listening on ${PORT}`) );
+  }
 }
