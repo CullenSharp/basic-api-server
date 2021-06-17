@@ -1,16 +1,23 @@
 'use strict';
 
 //dependencies
-require('dotenv').config();
 const express = require('express');
 
 //middlewares
+const logger = require('./middlewares/logger');
 
 //setup
 const app = express();
-const PORT = process.env.PORT || 3001;
+
+//routes
+const food = require('./routes/food')
+
+app.use(logger);
+app.use(food);
 
 module.exports = {
   app,
-  start: app.listen(PORT, console.log(`listening on ${PORT}`));
+  start: (PORT) => {
+    app.listen(PORT, console.log(`listening on ${PORT}`) );
+  }
 }
