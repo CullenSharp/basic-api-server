@@ -17,7 +17,7 @@ npm start
 
 ## UML
 
-![CRUD API](uml.png)
+![CRUD API](UML.png)
 
 ## Routes
 
