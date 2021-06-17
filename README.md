@@ -1,114 +1,106 @@
-# All about Express
+# Basic REST API
 
-June 15, 2021
+June 16, 2021
 
-## Shredder
+## Description
 
-```JS
-  'use strict';
-  $$.map = (items, callback) => {
-    // take an array/object [1,2,3,4 ... n] {foo: bar}
-    // iterate over each item with callback
-    // return a new array
+This is a basic REST API made using Express. Testing with Jest and Supertest. Mocking with Sqlite and Sequelizer.
 
-    const res = [];
-    let index = 0;
+## Start up
 
-    if(typeof items === 'object') {
-      for(const [key, value] of Object.entries(items)) {
-        res[index] = callback(value, index);
-        index ++;
-      }
-      return res;
-    } 
+Clone the repo from github, and install the necessary dependencies.
 
-    for(const item of items) {
-      res[index] = (callback(item, index));
-      index ++;
-    }
-    
-    return res
-}
+```BASH
+npm i
+npm start
 ```
 
-## Express
+## UML
 
-### Routing
+![CRUD API](uml.png)
 
-**How does express know which middleware to use?**
+## Routes
 
-Routes are defined in Express with a path and a callback:
+### /food
 
-```JS
-const express = require('express');
-const app = express();
+#### GET
 
-app.get('/foo', (req, res) => {
-  res.send('bar');
-})
-```
+* Status code: 200
+* JSON response:
+  * Returns and array of `Food` items
+  * Name: STRING
+  * Calories: INTEGER
 
-There's also .post, .put, .delete, and etc.. But now a GET request to '/' has been defined; it can use that handler, and we should get back 'bang' when we do. If we called .post to the same route, well it would shoot back an error. The POST request route has not been defined
+#### POST
 
-### Middleware
+* Status code: 200
+* JSON response:
+  * Returns a newly created `Food` item
+  * Name: STRING
+  * Calories: INTEGER
 
-Middlewares are used for moving, modifying and checking requests (i.e. what comes down the pipe). Most of the time they look like this: 
+### /food/:id
 
-```JS
-module.exports = (req, res, next) => {
-  // do something
-  // go to the next thing
-  next();
-}
-```
+#### GET
 
-You can also pass an error handler to next() by passing it a message.
+* Status code: 200
+* JSON response:
+  * Returns a single `Food` item based on the id
+  * Name: STRING
+  * Calories: INTEGER
 
-```JS
-module.exports = (error, req, res, next) => {
-  // do something
-}
-```
+#### PUT
 
-Calling them in the server code will look like this:
+* Status code: 200
+* JSON response:
+  * Returns the modified `Food` item based on the id
+  * Name: STRING
+  * Calories: INTEGER
 
-```JS
-  // app.METHOD('/route', MIDDLEWARE, CALLBACK);
-  app.get('/', getUser, (req,res) => {
-    user = req.body;
-    res.send(user);
-  })
-```
+#### DELETE
 
-Or this:
+* Status code: 204
+* Removes a single `Food` item based on the id, *no body*
 
-```JS
-//app.use(MIDDLEWARE)
-app.use(authorization);
-```
+----
 
-### Coverage
+### /clothes
 
-We use jest to test our code before incorporating it into the production branch of our code. The value of this is that we can make sure that the code isn't doing something really wacky that will break things. We set the paramaters for what makes the code production ready; once those checks pass, the code is, in a sense, vetted for production.
+#### GET
 
-#### Here's some keywords
+* Status code: 200
+* JSON response:
+  * Returns and array of `Clothes` items
+  * Name: STRING
+  * Material: STRING
 
-* jest.fn()
+#### POST
 
-  * this is a mock function
+* Status code: 200
+* JSON response:
+  * Returns a newly created `Clothes` item
+  * Name: STRING
+  * Material: STRING
 
-* toEqual('some Data')
+### /food/:id
 
-  * checks to see if the output of a function or test is *equal* to some other value
+#### GET
 
-* expect()
+* Status code: 200
+* JSON response:
+  * Returns a single `Clothes` item based on the id
+  * Name: STRING
+  * Material: STRING
 
-  * Tells the test where to look
+#### PUT
 
-* test('message', callback)
+* Status code: 200
+* JSON response:
+  * Returns the modified `Clothes` item based on the id
+  * Name: STRING
+  * Material: STRING
 
-  * defines a test within the suite
+#### DELETE
 
-* describe('message', callback)
-
-  * describes a test suite
+* Status code: 204
+* Removes a single `Clothes` item based on the id, *no body*
