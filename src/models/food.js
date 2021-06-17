@@ -4,10 +4,11 @@ const foodModel = (sequelize, DataTypes) => {
   return sequelize.define('Food', {
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      required: true,
     },
     calories: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      required: false
     }
   });
 }

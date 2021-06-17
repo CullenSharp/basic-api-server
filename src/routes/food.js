@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 
 //models
-const data = require('../models/index')
+const data = require('../models/index');
 
 //routes
 router.get('/food', getAll);
@@ -28,20 +28,39 @@ async function getOne(req, res) {
     where: {
       id: id
     }
-  })
+  });
 
   res.status(200).send(foodItem);
 }
 
-function create(req, res) {
-  res.status(200).send('building');
+async function create(req, res) {
+  const foodData = req.body;
+  
+  const foodItem = await data.food.create(foodData);
+  res.status(200).send(foodItem);
 }
 
-function update(req, res) {
-  res.status(200).send('building');
+async function update(req, res) {
+  const id = req.params.id;
+  const foodData = req.body;
+
+  const foodItem = await data.food.findOne({
+    where: {
+      id: id
+    }
+  });
+
+  await foodItem.update(foodData);
+
+  res.status(200).send(foodItem);
 }
 
-function remove(req, res) {
+async function remove(req, res) {
+  const id = req.params.id;
+
+  await data.food.destroy({ where: { id: id }});
+
+
   res.status(204);
 }
 

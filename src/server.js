@@ -2,6 +2,7 @@
 
 //dependencies
 const express = require('express');
+const cors = require('cors');
 
 //middlewares
 const logger = require('./middlewares/logger');
@@ -10,10 +11,16 @@ const logger = require('./middlewares/logger');
 const app = express();
 
 //routes
-const food = require('./routes/food')
+const foodRoutes = require('./routes/food');
+const clohtesRoutes = require('./routes/clothes');
+
+app.use(cors());
+app.use(express.json());
 
 app.use(logger);
-app.use(food);
+
+app.use(foodRoutes);
+app.use(clohtesRoutes);
 
 module.exports = {
   app,
